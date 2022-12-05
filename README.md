@@ -1,5 +1,9 @@
-# backend_invoices
+# install
+npm i
 
-sorry, no readme, don't have a developer to prepare this ( 
+# start
 
-support@onout.org
+pm2 start /root/server/server.sh
+
+
+
