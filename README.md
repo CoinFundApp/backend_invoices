@@ -92,6 +92,8 @@ Restart nginx
 
 - `pm2 describe server`
 
+(if running it will show a status of `online`)
+
 # Submit Relay for Inclusion
 
 Once the relay server is up and running, please submit a PR for the `relay.js` file, found here: https://github.com/Spl0itable/coinfundit/blob/main/js/relays.js
