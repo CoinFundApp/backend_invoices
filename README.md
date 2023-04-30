@@ -68,7 +68,7 @@ server {
 
 Restart nginx
 
-`sudo service nginx restart`
+- `sudo service nginx restart`
 
 Use a service such as Certbot to provision a Let's Encrypt free SSL certificate for your domain, replacing `your_domain.com` with the real domain.
 
