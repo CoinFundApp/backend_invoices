@@ -33,13 +33,16 @@ If you would like to help CoinFundIt.com remain decentralized, please contribute
 - `sudo apt update`
 - `sudo apt upgrade`
 - `sudo apt install nginx`
-- `sudo npm install`
-- `sudo npm install -g pm2`
+- `sudo apt install nodejs npm`
+- `sudo apt install python3-certbot-nginx`
 
 2. Clone the repository:
 
 - `git clone https://github.com/Spl0itable/backend_invoices.git`
 - `cd backend_invoices`
+- `sudo npm install`
+- `sudo npm install -g pm2`
+- `sudo npm install request`
 
 3. Configure nginx to act as a reverse proxy for the Node.js server.
 
@@ -50,13 +53,13 @@ Delete the default nginx settings file:
 - `sudo rm -f /etc/nginx/sites-available/default`
 
 Use a text editor like nano to make a new one:
-- `sudo nano  /etc/nginx/sites-available/default`
+- `sudo nano /etc/nginx/sites-available/default`
 
-Add the following example configuration (replace `data.coinfundit.com` with your relay domain):
+Add the following example configuration (replace `your_domain.com` with your relay domain):
 
 ```
-server {
-    server_name data.coinfundit.com;
+server{
+    server_name your_domain.com;
     location / {
         proxy_pass http://localhost:3000;
         proxy_http_version 1.1;
@@ -65,6 +68,7 @@ server {
         proxy_set_header Host $host;
         proxy_cache_bypass $http_upgrade;
     }
+}
 ```
 
 Restart nginx
@@ -89,7 +93,11 @@ Restart nginx
 
 - `pm2 start server.sh`
 
-3. Confirm the server is running:
+3. Ensure the pm2 process runs on boot:
+
+- `pm2 startup systemd`
+
+4. Confirm the server is running:
 
 - `pm2 describe server`
 
