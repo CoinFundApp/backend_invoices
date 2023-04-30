@@ -19,6 +19,7 @@ If you would like to help CoinFundIt.com remain decentralized, please contribute
 
 ## Prerequisites
 
+- Ubuntu Linux 22.04 LTS VPS
 - [Node.js](https://nodejs.org/) 14.x or higher
 - [npm](https://www.npmjs.com/) 6.x or higher
 - [pm2](https://pm2.keymetrics.io/) (Needed for production deployment)
@@ -26,24 +27,31 @@ If you would like to help CoinFundIt.com remain decentralized, please contribute
 
 ## Installation
 
-1. Clone the repository:
+1. Install the dependencies:
+
+- `sudo apt update`
+- `sudo apt upgrade`
+- `sudo apt install nginx`
+- `sudo npm install`
+- `sudo npm install -g pm2`
+
+2. Clone the repository:
 
 - `git clone https://github.com/Spl0itable/backend_invoices.git`
 - `cd backend_invoices`
 
-2. Install the dependencies:
+3. Configure nginx to act as a reverse proxy for the Node.js server. Create a new nginx configuration file (e.g., /etc/nginx/sites-available/default).
 
-- `sudo apt update`
-- `npm install`
+- `sudo systemctl start nginx`
+- `sudo systemctl enable nginx`
 
-3. Configure nginx to act as a reverse proxy for the Node.js server. Create a new nginx configuration file (e.g., /etc/nginx/sites-available/default) and add the following example configuration (replace `data.coinfundit.com` with your relay domain).
+Delete the default nginx settings file:
+- `sudo rm -f /etc/nginx/sites-available/default`
 
-```
-# Delete the default nginx settings file
-sudo rm -f /etc/nginx/sites-available/default
-```
+Use a text editor like nano to make a new one:
+- `sudo nano  /etc/nginx/sites-available/default`
 
-`sudo nano  /etc/nginx/sites-available/default`
+Add the following example configuration (replace `data.coinfundit.com` with your relay domain):
 
 ```
 server {
@@ -64,25 +72,25 @@ Restart nginx
 
 Use a service such as Certbot to provision a Let's Encrypt free SSL certificate for your domain, replacing `your_domain.com` with the real domain.
 
-`sudo certbot --nginx -d your_domain.com`
+- `sudo certbot --nginx -d your_domain.com`
 
 Restart nginx
 
-`sudo service nginx restart`
+- `sudo service nginx restart`
 
 ## Running the Server
 
 1. Make the server.sh script executable:
 
-`chmod +x server.sh`
+- `chmod +x server.sh`
 
 2. Start the server using pm2:
 
-`pm2 start server.sh`
+- `pm2 start server.sh`
 
 3. Confirm the server is running:
 
-`pm2 describe server`
+- `pm2 describe server`
 
 # Submit Relay for Inclusion
 
