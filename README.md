@@ -111,6 +111,10 @@ Restart nginx
 - `sudo ufw allow 3000`
 - `sudo ufw enable`
 
+6. Confirm the server is accessible
+
+- Visit your relay server domain and see if you get the message `Cannot GET /` which is a good sign as it means the server is online and publicly accessible.
+
 # Submit Relay for Inclusion
 
 Once the relay server is up and running, please submit a PR for the `relay.js` file, found here: https://github.com/Spl0itable/coinfundit/blob/main/js/relays.js
