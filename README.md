@@ -20,6 +20,7 @@ If you would like to help CoinFundIt.com remain decentralized, please contribute
 ## Prerequisites
 
 - Ubuntu Linux 22.04 LTS VPS
+  - `Specs`: Minimum 1 vCPU, 1GB RAM
 - [Node.js](https://nodejs.org/) 14.x or higher
 - [npm](https://www.npmjs.com/) 6.x or higher
 - [pm2](https://pm2.keymetrics.io/) (Needed for production deployment)
