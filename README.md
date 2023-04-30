@@ -104,7 +104,7 @@ Restart nginx
 
 (if running it will show a status of `online`)
 
-5. Secure it with ufw
+5. Secure server with ufw
 
 - `sudo ufw allow 22`
 - `sudo ufw allow 443`
