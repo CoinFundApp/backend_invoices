@@ -32,6 +32,7 @@ If you would like to help CoinFundIt.com remain decentralized, please contribute
 
 - `sudo apt update`
 - `sudo apt upgrade`
+- `sudo apt install ufw`
 - `sudo apt install nginx`
 - `sudo apt install nodejs npm`
 - `sudo apt install python3-certbot-nginx`
@@ -102,6 +103,13 @@ Restart nginx
 - `pm2 describe server`
 
 (if running it will show a status of `online`)
+
+5. Secure it with ufw
+
+- `sudo ufw allow 22`
+- `sudo ufw allow 443`
+- `sudo ufw allow 3000`
+- `sudo ufw enable`
 
 # Submit Relay for Inclusion
 

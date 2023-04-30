@@ -35,7 +35,7 @@ const load = async () => {
   })
 }
 
-const add = async (currency, toAddress, fromAddress, amount, label, mainnet, destAddress, contact) => {
+const add = async (currency, toAddress, fromAddress, amount, label, mainnet, destAddress, contact, uniqhash) => {
   return new Promise(async (resolve, fail) => {
     const fromHashString = `${currency}:${fromAddress}:${(mainnet) ? '1' : '0'}`
     const toHashString = `${currency}:${toAddress}:${(mainnet) ? '1' : '0'}`
@@ -51,8 +51,6 @@ const add = async (currency, toAddress, fromAddress, amount, label, mainnet, des
     const invoiceNumber = await getNextInvoiceNumber(fromHex)
 
     const createUtx = Math.floor(new Date().getTime() / 1000)
-
-    const uniqhash = md5(`${fromHashString}:${toHashString}:${invoiceNumber}:${amount}:${createUtx}`)
 
     db.serialize( () => {
       const stmt = db.prepare('INSERT INTO invoices VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )')
@@ -189,9 +187,9 @@ const fetch = async (currency, address, mainnet) => {
     //const selectQuery = `SELECT * FROM invoices WHERE fromHex = '${hex}' OR toHex = '${hex}' ORDER BY utx DESC LIMIT 100`
     //const selectQuery = `SELECT * FROM invoices WHERE currency = '${currency}' fromHex = '${hex}' OR toHex = '${hex}' ORDER BY utx DESC LIMIT 100`
     const selectQuery = 'SELECT m.*, (SELECT COUNT(i.id) FROM invoices AS i WHERE i.fromAddress=m.fromAddress ) AS totalCount FROM invoices as m WHERE m.type = ? AND ( m.toAddress = ? OR m.fromAddress = ? ) ORDER BY m.utx DESC LIMIT 100'
-    
-    
-    
+
+
+
     const ret = []
     await db.each(selectQuery,[currency,address,address], async function(err, row) {
       ret.push(row)

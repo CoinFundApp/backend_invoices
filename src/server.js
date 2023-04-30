@@ -115,6 +115,7 @@ app.post('/invoice/push/', async (req,res) => {
     toAddress,
     contact,
     destination,
+    uniqhash,
   } = req.body
   if (address && pubkey && checkSign(address, pubkey, req.body)) {
     if (amount && currency && fromAddress) {
@@ -127,6 +128,7 @@ app.post('/invoice/push/', async (req,res) => {
         mainnet,
         destination,
         contact,
+        uniqhash,
       )
       res.status(200).json({ answer: 'ok', invoiceId })
     } else {
@@ -197,7 +199,7 @@ app.post('/invoice/fetch/', async (req,res) => {
       address,
       items: retData,
     })
-    
+
   } else {
     res.status(400).json({ error: 'Bad request' })
   }
@@ -205,7 +207,7 @@ app.post('/invoice/fetch/', async (req,res) => {
     currency [BTC|ETH| etc] requery
     address - requery
     Возможность запросить сразу по нескольким валютам адресам
-    
+
     list = [
       {
         currency [BTC|ETH| etc]
@@ -219,13 +221,13 @@ app.post('/invoice/fetch/', async (req,res) => {
       }
     ]
   */
-  
+
   // walletHash = sha(currency+|+address)
   // Запрашиваем из базы все где toHash = walletHash OR fromHash = walletHash
   //
 })
 app.post('/sign/', async (req,res) => {
-  
+
 })
 
 //app.listen(process.env.PORT)
