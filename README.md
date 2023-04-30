@@ -41,7 +41,7 @@ If you would like to help CoinFundIt.com remain decentralized, please contribute
 - `git clone https://github.com/Spl0itable/backend_invoices.git`
 - `cd backend_invoices`
 
-3. Configure nginx to act as a reverse proxy for the Node.js server. Create a new nginx configuration file (e.g., /etc/nginx/sites-available/default).
+3. Configure nginx to act as a reverse proxy for the Node.js server.
 
 - `sudo systemctl start nginx`
 - `sudo systemctl enable nginx`
