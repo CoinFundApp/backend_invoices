@@ -3,7 +3,7 @@ const sqlite3 = require('sqlite3').verbose();
 
 const mainnet = '1';
 const dbPath = '../db.sqlite';
-const relaysUrl = './relays.json';
+const relaysUrl = 'https://raw.githubusercontent.com/Spl0itable/backend_invoices/main/src/relays.json';
 const fs = require('fs').promises;
 
 async function fetchRelays(relayUrl) {
