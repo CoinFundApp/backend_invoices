@@ -51,33 +51,47 @@ const updateLocalDatabase = async (rows) => {
   const columns = await getTableColumns(db)
 
   const updateOrInsertRow = (row) => {
-    const rowColumns = columns.filter((column) => row[column] !== undefined)
+    return new Promise((resolve, reject) => {
+      const rowColumns = columns.filter((column) => row[column] !== undefined)
   
-    // Check if rowColumns is not empty
-    if (rowColumns.length > 0) {
-      const values = rowColumns.map((column) => `'${row[column]}'`).join(', ')
-      const updateFields = rowColumns.map((column) => `${column} = EXCLUDED.${column}`).join(', ')
+      if (rowColumns.length > 0) {
+        const values = rowColumns.map((column) => `'${row[column]}'`).join(', ')
+        const updateFields = rowColumns.map((column) => `${column} = EXCLUDED.${column}`).join(', ')
   
-      const sql = `
-        INSERT INTO invoices (${rowColumns.join(', ')})
-        VALUES (${values})
-        ON CONFLICT (uniqhash) DO UPDATE SET ${updateFields}
-      `;
+        const sql = `
+          INSERT INTO invoices (${rowColumns.join(', ')})
+          VALUES (${values})
+          ON CONFLICT (uniqhash) DO UPDATE SET ${updateFields}
+        `;
   
-      db.run(sql, (err) => {
-        if (err) {
-          console.error('Error updating row: ', err.message)
-        }
-      })
-    } else {
-      console.warn('Skipping row with no matching columns:', row)
-    }
+        db.run(sql, (err) => {
+          if (err) {
+            console.error('Error updating row: ', err.message)
+            reject(err)
+          } else {
+            resolve()
+          }
+        })
+      } else {
+        console.warn('Skipping row with no matching columns:', row)
+        resolve()
+      }
+    })
   }
-
-  rows.forEach(updateOrInsertRow)
-
-  db.close()
-}
+  
+  const updateLocalDatabase = async (rows) => {
+    const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (err) => {
+      if (err) {
+        console.error(err.message)
+      }
+    })
+  
+    const columns = await getTableColumns(db)
+    const updatePromises = rows.map((row) => updateOrInsertRow(row))
+    await Promise.all(updatePromises)
+  
+    db.close()
+  }
 
 const syncRelays = async () => {
     const relays = await fetchRelays(relaysUrl) // Pass relaysUrl as a parameter
