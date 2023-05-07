@@ -6,16 +6,13 @@ const dbPath = '../db.sqlite';
 const relaysUrl = 'https://raw.githubusercontent.com/Spl0itable/backend_invoices/main/src/relays.json';
 
 async function fetchRelays(relayUrl) {
-  return new Promise(async (resolve) => {
-    try {
-      const response = await axios.get(relayUrl)
-      // Use response.data directly without calling JSON.parse()
-      resolve(response.data)
-    } catch (error) {
-      console.error('Error fetching relays.json file:', error)
-      resolve([])
-    }
-  })
+  try {
+    const response = await axios.get(relayUrl)
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching relays.json file:', error)
+    return [];
+  }
 }
 
 const fetchDataFromRelay = async (relay) => {
@@ -91,17 +88,16 @@ const updateLocalDatabase = async (rows) => {
     })
   }
 
-  const updatePromises = rows.map((row) => updateOrInsertRow(row))
-  await Promise.all(updatePromises)
+  await Promise.all(rows.map(updateOrInsertRow));
 
-  db.close()
+  db.close();
 }
 
 const syncRelays = async () => {
-  const relays = await fetchRelays(relaysUrl) // Pass relaysUrl as a parameter
-  const allData = await Promise.all(relays.map(fetchDataFromRelay))
-  const mergedData = [].concat(...allData)
-  await updateLocalDatabase(mergedData)
+  const relays = await fetchRelays(relaysUrl);
+  const allData = await Promise.all(relays.map(fetchDataFromRelay));
+  const mergedData = [].concat(...allData);
+  await updateLocalDatabase(mergedData);
 }
 
-syncRelays()
+syncRelays();
