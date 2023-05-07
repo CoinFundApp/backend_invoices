@@ -3,7 +3,7 @@ const sqlite3 = require('sqlite3').verbose();
 
 const mainnet = '1';
 const dbPath = '../db.sqlite';
-const relaysUrl = 'https://raw.githubusercontent.com/Spl0itable/backend_invoices/main/src/relays.json';
+const relaysUrl = 'https://fleek.ipfs.io/ipfs/QmWdpftgzRJ3MUwBGm9g1XQPcuou2qEev36MokZ3mbKSd7/src/relays.json';
 
 const escapeSingleQuotes = (value) => {
     if (typeof value === 'string') {
