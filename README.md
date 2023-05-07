@@ -130,6 +130,8 @@ Restart nginx
 - Select your preferred text editor, then paste the following and save:
 - `*/5 * * * * /usr/bin/node /backend_invoices/src/syncRelays.js`
 
+9. Reboot the server
+
 # Submit Relay for Inclusion
 
 Once the relay server is up and running, please submit a Pull Request for the `/js/relays.js` (<a href="https://github.com/Spl0itable/coinfundit/blob/main/js/relays.js">here</a>) and `relays.json` (<a href="https://github.com/Spl0itable/backend_invoices/blob/main/src/relays.json">here</a>) files.
