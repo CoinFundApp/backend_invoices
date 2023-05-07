@@ -117,7 +117,7 @@ Restart nginx
 
 6. Confirm the server is accessible
 
-- Visit your relay server domain and see if you get the message `Cannot GET /` which is a good sign as it means the server is online and publicly accessible.
+- Visit your relay server domain and see if you get the message `Cannot GET /` which is a good sign as it means the server is online and publicly accessible. (may require reboot, see step 9)
 
 7. Sync data from other relays
 
