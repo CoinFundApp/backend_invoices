@@ -3,7 +3,7 @@ const sqlite3 = require('sqlite3').verbose();
 
 const mainnet = '1';
 const dbPath = '../db.sqlite';
-const relaysUrl = 'https://raw.githubusercontent.com/Spl0itable/coinfundit/main/js/relays.js';
+const relaysUrl = './relays.json';
 
 const fetchRelays = async () => {
   try {
