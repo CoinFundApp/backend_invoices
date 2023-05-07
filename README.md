@@ -145,3 +145,5 @@ Once approved and merged to the production CoinFundIt.com app, your relay server
 # Censorship-resistant access:
 
 As with the <a href="https://github.com/Spl0itable/coinfundit">main repo</a> of the CoinFundIt.com app, this repo is also mirroed on IPFS. The `relays.json` file used within the `syncRelays.js` script calls the file through an IPFS gateway. In the event the gateway goes down, a new IPFS gateway can be found <a href="https://ipfs.github.io/public-gateway-checker/">here</a> and changed within the `syncRelays.js` file. 
+
+IPFS Hash: `QmNZa1mma3Czz7JQsc9JubgsQZcj1JqU8HyPgpuwJGF8v8`
