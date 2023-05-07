@@ -34,6 +34,7 @@ If you would like to help CoinFundIt.com remain decentralized, please contribute
 - `sudo apt upgrade`
 - `sudo apt install ufw`
 - `sudo apt install nginx`
+- `sudo apt install sqlite3`
 - `sudo apt install nodejs npm`
 - `sudo apt install python3-certbot-nginx`
 
@@ -42,6 +43,7 @@ If you would like to help CoinFundIt.com remain decentralized, please contribute
 - `git clone https://github.com/Spl0itable/backend_invoices.git`
 - `cd backend_invoices`
 - `sudo npm install`
+- `sudo npm install axios`
 - `sudo npm install -g pm2`
 - `sudo npm install request`
 
