@@ -5,8 +5,11 @@ const mainnet = '1';
 const dbPath = '../db.sqlite';
 const relaysUrl = 'https://raw.githubusercontent.com/Spl0itable/backend_invoices/main/src/relays.json';
 
-const escapeSingleQuotes = (str) => {
-    return str.replace(/'/g, "''");
+const escapeSingleQuotes = (value) => {
+    if (typeof value === 'string') {
+      return value.replace(/'/g, "''")
+    }
+    return value;
   }
 
 async function fetchRelays(relayUrl) {
