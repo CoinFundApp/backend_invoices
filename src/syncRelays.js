@@ -49,31 +49,39 @@ const updateLocalDatabase = async (rows) => {
 
   const updateOrInsertRow = (row) => {
     return new Promise((resolve, reject) => {
-      const rowColumns = columns.filter((column) => row[column] !== undefined)
+      const rowColumns = columns.filter((column) => column !== 'id' && row[column] !== undefined)
   
       if (rowColumns.length > 0) {
         const values = rowColumns.map((column) => `'${row[column]}'`).join(', ')
         const updateFields = rowColumns.map((column) => `${column} = '${row[column]}'`).join(', ')
   
-        const insertSql = `
-          INSERT OR IGNORE INTO invoices (${rowColumns.join(', ')})
-          VALUES (${values});
-        `;
+        db.get(`SELECT * FROM invoices WHERE uniqhash = ?`, [row.uniqhash], (err, existingRow) => {
+          if (existingRow) {
+            // Row with the same uniqhash already exists, update the row
+            const updateSql = `
+              UPDATE invoices
+              SET ${updateFields}
+              WHERE uniqhash = '${row.uniqhash}';
+            `;
   
-        const updateSql = `
-          UPDATE invoices
-          SET ${updateFields}
-          WHERE uniqhash = '${row.uniqhash}';
-        `;
-  
-        db.run(insertSql, (err) => {
-          if (err) {
-            console.error('Error inserting row: ', err.message)
-            reject(err)
-          } else {
             db.run(updateSql, (err) => {
               if (err) {
                 console.error('Error updating row: ', err.message)
+                reject(err)
+              } else {
+                resolve()
+              }
+            })
+          } else {
+            // No row with the same uniqhash, insert the row
+            const insertSql = `
+              INSERT INTO invoices (${rowColumns.join(', ')})
+              VALUES (${values});
+            `;
+  
+            db.run(insertSql, (err) => {
+              if (err) {
+                console.error('Error inserting row: ', err.message)
                 reject(err)
               } else {
                 resolve()
@@ -88,16 +96,16 @@ const updateLocalDatabase = async (rows) => {
     })
   }
 
-  await Promise.all(rows.map(updateOrInsertRow));
+  await Promise.all(rows.map(updateOrInsertRow))
 
-  db.close();
+  db.close()
 }
 
 const syncRelays = async () => {
-  const relays = await fetchRelays(relaysUrl);
-  const allData = await Promise.all(relays.map(fetchDataFromRelay));
-  const mergedData = [].concat(...allData);
-  await updateLocalDatabase(mergedData);
+  const relays = await fetchRelays(relaysUrl)
+  const allData = await Promise.all(relays.map(fetchDataFromRelay))
+  const mergedData = [].concat(...allData)
+  await updateLocalDatabase(mergedData)
 }
 
-syncRelays();
+syncRelays()
