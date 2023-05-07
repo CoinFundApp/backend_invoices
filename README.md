@@ -9,7 +9,7 @@ This repository contains the source code for a simple SQLite3 Node.js server tha
   - `database.js`: Manages database connections and operations.
   - `server.js`: Initializes and starts the server.
   - `syncRelays.js`: Syncs data between relays.
-  - `relays,json`: Contains list of relays.
+  - `relays.json`: Contains list of relays.
 - `app.js`: Main entry point for the application.
 - `package.json`: Lists the project's dependencies and scripts.
 - `package-lock.json`: Locks down dependency versions for consistent installs.
