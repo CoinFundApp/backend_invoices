@@ -119,7 +119,7 @@ Restart nginx
 
 # Submit Relay for Inclusion
 
-Once the relay server is up and running, please submit a Pull Request for the `/js/relays.js` (<a href="https://github.com/Spl0itable/coinfundit/blob/main/js/relays.js">here</a>) and `relays.json` (here) files.
+Once the relay server is up and running, please submit a Pull Request for the `/js/relays.js` (<a href="https://github.com/Spl0itable/coinfundit/blob/main/js/relays.js">here</a>) and `relays.json` (<a href="https://github.com/Spl0itable/backend_invoices/blob/main/src/relays.json">here</a>) files.
 
 Add your domain in the same syntax as outlined in the file:
 
