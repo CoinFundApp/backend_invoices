@@ -141,3 +141,7 @@ Add your domain in the same syntax as outlined in the files:
 `{ "name": "https://your_domain" },`
 
 Once approved and merged to the production CoinFundIt.com app, your relay server will immediately begin to read/write data for all crowdfunding or donations campaigns. 
+
+# Censorship-resistant access:
+
+As with the <a href="https://github.com/Spl0itable/coinfundit">main repo</a> of the CoinFundIt.com app, this repo is also mirroed on IPFS. The `relays.json` file used within the `syncRelays.js` script calls the file through an IPFS gateway. In the event the gateway goes down, a new IPFS gateway can be found <a href="https://ipfs.github.io/public-gateway-checker/">here</a> and changed within the `syncRelays.js` file. 
