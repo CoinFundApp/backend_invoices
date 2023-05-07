@@ -53,17 +53,16 @@ const updateLocalDatabase = async (rows) => {
   const updateOrInsertRow = (row) => {
     return new Promise((resolve, reject) => {
       const rowColumns = columns.filter((column) => row[column] !== undefined)
-
+  
       if (rowColumns.length > 0) {
         const values = rowColumns.map((column) => `'${row[column]}'`).join(', ')
-        const updateFields = rowColumns.map((column) => `${column} = EXCLUDED.${column}`).join(', ')
-
+  
         const sql = `
-          INSERT INTO invoices (${rowColumns.join(', ')})
-          VALUES (${values})
-          ON CONFLICT (uniqhash) DO UPDATE SET ${updateFields}
+          INSERT OR REPLACE INTO invoices (${columns.join(', ')})
+          SELECT ${columns.map((column) => (rowColumns.includes(column) ? `'${row[column]}'` : column)).join(', ')}
+          WHERE NOT EXISTS (SELECT * FROM invoices WHERE uniqhash='${row.uniqhash}');
         `;
-
+  
         db.run(sql, (err) => {
           if (err) {
             console.error('Error updating row: ', err.message)
