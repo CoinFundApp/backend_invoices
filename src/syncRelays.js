@@ -52,23 +52,26 @@ const updateLocalDatabase = async (rows) => {
 
   const updateOrInsertRow = (row) => {
     const rowColumns = columns.filter((column) => row[column] !== undefined)
-    const values = rowColumns
-      .map((column) => `'${row[column]}'`)
-      .join(', ')
-
-    const updateFields = rowColumns.map((column) => `${column} = EXCLUDED.${column}`).join(', ')
-
-    const sql = `
-      INSERT INTO invoices (${rowColumns.join(', ')})
-      VALUES (${values})
-      ON CONFLICT (uniqhash) DO UPDATE SET ${updateFields}
-    `;
-
-    db.run(sql, (err) => {
-      if (err) {
-        console.error('Error updating row: ', err.message)
-      }
-    })
+  
+    // Check if rowColumns is not empty
+    if (rowColumns.length > 0) {
+      const values = rowColumns.map((column) => `'${row[column]}'`).join(', ')
+      const updateFields = rowColumns.map((column) => `${column} = EXCLUDED.${column}`).join(', ')
+  
+      const sql = `
+        INSERT INTO invoices (${rowColumns.join(', ')})
+        VALUES (${values})
+        ON CONFLICT (uniqhash) DO UPDATE SET ${updateFields}
+      `;
+  
+      db.run(sql, (err) => {
+        if (err) {
+          console.error('Error updating row: ', err.message)
+        }
+      })
+    } else {
+      console.warn('Skipping row with no matching columns:', row)
+    }
   }
 
   rows.forEach(updateOrInsertRow)
