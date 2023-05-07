@@ -5,6 +5,10 @@ const mainnet = '1';
 const dbPath = '../db.sqlite';
 const relaysUrl = 'https://raw.githubusercontent.com/Spl0itable/backend_invoices/main/src/relays.json';
 
+const escapeSingleQuotes = (str) => {
+    return str.replace(/'/g, "''");
+  }
+
 async function fetchRelays(relayUrl) {
   try {
     const response = await axios.get(relayUrl)
@@ -52,8 +56,8 @@ const updateLocalDatabase = async (rows) => {
       const rowColumns = columns.filter((column) => column !== 'id' && row[column] !== undefined)
   
       if (rowColumns.length > 0) {
-        const values = rowColumns.map((column) => `'${row[column]}'`).join(', ')
-        const updateFields = rowColumns.map((column) => `${column} = '${row[column]}'`).join(', ')
+        const values = rowColumns.map((column) => `'${escapeSingleQuotes(row[column])}'`).join(', ')
+        const updateFields = rowColumns.map((column) => `${column} = '${escapeSingleQuotes(row[column])}'`).join(', ')
   
         db.get(`SELECT * FROM invoices WHERE uniqhash = ?`, [row.uniqhash], (err, existingRow) => {
           if (existingRow) {
