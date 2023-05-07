@@ -9,8 +9,8 @@ async function fetchRelays(relayUrl) {
     return new Promise(async (resolve) => {
       try {
         const response = await axios.get(relayUrl)
-        const jsonData = JSON.parse(response.data)
-        resolve(jsonData)
+        // Use response.data directly without calling JSON.parse()
+        resolve(response.data)
       } catch (error) {
         console.error('Error fetching relays.json file:', error)
         resolve([])
