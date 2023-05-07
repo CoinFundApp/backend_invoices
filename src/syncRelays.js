@@ -103,8 +103,10 @@ const updateLocalDatabase = async (rows) => {
 
 const syncRelays = async () => {
   const relays = await fetchRelays(relaysUrl)
-  const allData = await Promise.all(relays.map(fetchDataFromRelay))
-  const mergedData = [].concat(...allData)
+  const allResponses = await Promise.all(relays.map(fetchDataFromRelay))
+  const mergedData = allResponses
+  .map(response => response.items)
+  .flat();
   await updateLocalDatabase(mergedData)
 }
 
