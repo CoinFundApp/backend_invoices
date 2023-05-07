@@ -3,17 +3,20 @@ const sqlite3 = require('sqlite3').verbose();
 
 const mainnet = '1';
 const dbPath = '../db.sqlite';
-const relaysUrl = 'https://raw.githubusercontent.com/Spl0itable/backend_invoices/main/src/relays.json';
+const relaysUrl = './relays.json';
+const fs = require('fs').promises;
 
-const fetchRelays = async () => {
-  try {
-    const response = await axios.get(relaysUrl);
-    const relaysJson = response.data.replace('var relays = ', '').replace(';', '')
-    return JSON.parse(relaysJson);
-  } catch (error) {
-    console.error('Error fetching relays.js file: ', error)
-    return [];
-  }
+async function fetchRelays(relayUrl) {
+  return new Promise(async (resolve) => {
+    try {
+      const fileContent = await fs.readFile(relayUrl, 'utf8')
+      const jsonData = JSON.parse(fileContent)
+      resolve(jsonData)
+    } catch (error) {
+      console.error('Error fetching relays.json file:', error)
+      resolve([])
+    }
+  })
 }
 
 const fetchDataFromRelay = async (relay) => {
