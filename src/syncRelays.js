@@ -6,17 +6,17 @@ const dbPath = '../db.sqlite';
 const relaysUrl = 'https://raw.githubusercontent.com/Spl0itable/backend_invoices/main/src/relays.json';
 
 async function fetchRelays(relayUrl) {
-    return new Promise(async (resolve) => {
-      try {
-        const response = await axios.get(relayUrl)
-        // Use response.data directly without calling JSON.parse()
-        resolve(response.data)
-      } catch (error) {
-        console.error('Error fetching relays.json file:', error)
-        resolve([])
-      }
-    })
-  }
+  return new Promise(async (resolve) => {
+    try {
+      const response = await axios.get(relayUrl)
+      // Use response.data directly without calling JSON.parse()
+      resolve(response.data)
+    } catch (error) {
+      console.error('Error fetching relays.json file:', error)
+      resolve([])
+    }
+  })
+}
 
 const fetchDataFromRelay = async (relay) => {
   try {
@@ -53,17 +53,17 @@ const updateLocalDatabase = async (rows) => {
   const updateOrInsertRow = (row) => {
     return new Promise((resolve, reject) => {
       const rowColumns = columns.filter((column) => row[column] !== undefined)
-  
+
       if (rowColumns.length > 0) {
         const values = rowColumns.map((column) => `'${row[column]}'`).join(', ')
         const updateFields = rowColumns.map((column) => `${column} = EXCLUDED.${column}`).join(', ')
-  
+
         const sql = `
           INSERT INTO invoices (${rowColumns.join(', ')})
           VALUES (${values})
           ON CONFLICT (uniqhash) DO UPDATE SET ${updateFields}
         `;
-  
+
         db.run(sql, (err) => {
           if (err) {
             console.error('Error updating row: ', err.message)
@@ -78,26 +78,18 @@ const updateLocalDatabase = async (rows) => {
       }
     })
   }
-  
-  const updateLocalDatabase = async (rows) => {
-    const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (err) => {
-      if (err) {
-        console.error(err.message)
-      }
-    })
-  
-    const columns = await getTableColumns(db)
-    const updatePromises = rows.map((row) => updateOrInsertRow(row))
-    await Promise.all(updatePromises)
-  
-    db.close()
-  }
+
+  const updatePromises = rows.map((row) => updateOrInsertRow(row))
+  await Promise.all(updatePromises)
+
+  db.close()
+}
 
 const syncRelays = async () => {
-    const relays = await fetchRelays(relaysUrl) // Pass relaysUrl as a parameter
-    const allData = await Promise.all(relays.map(fetchDataFromRelay))
-    const mergedData = [].concat(...allData)
-    await updateLocalDatabase(mergedData)
-  }
+  const relays = await fetchRelays(relaysUrl) // Pass relaysUrl as a parameter
+  const allData = await Promise.all(relays.map(fetchDataFromRelay))
+  const mergedData = [].concat(...allData)
+  await updateLocalDatabase(mergedData)
+}
 
 syncRelays()
