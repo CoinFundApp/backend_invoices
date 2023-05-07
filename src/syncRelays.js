@@ -56,19 +56,32 @@ const updateLocalDatabase = async (rows) => {
   
       if (rowColumns.length > 0) {
         const values = rowColumns.map((column) => `'${row[column]}'`).join(', ')
+        const updateFields = rowColumns.map((column) => `${column} = '${row[column]}'`).join(', ')
   
-        const sql = `
-          INSERT OR REPLACE INTO invoices (${columns.join(', ')})
-          SELECT ${columns.map((column) => (rowColumns.includes(column) ? `'${row[column]}'` : column)).join(', ')}
-          WHERE NOT EXISTS (SELECT * FROM invoices WHERE uniqhash='${row.uniqhash}');
+        const insertSql = `
+          INSERT OR IGNORE INTO invoices (${rowColumns.join(', ')})
+          VALUES (${values});
         `;
   
-        db.run(sql, (err) => {
+        const updateSql = `
+          UPDATE invoices
+          SET ${updateFields}
+          WHERE uniqhash = '${row.uniqhash}';
+        `;
+  
+        db.run(insertSql, (err) => {
           if (err) {
-            console.error('Error updating row: ', err.message)
+            console.error('Error inserting row: ', err.message)
             reject(err)
           } else {
-            resolve()
+            db.run(updateSql, (err) => {
+              if (err) {
+                console.error('Error updating row: ', err.message)
+                reject(err)
+              } else {
+                resolve()
+              }
+            })
           }
         })
       } else {
