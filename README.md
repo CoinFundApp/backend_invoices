@@ -1,6 +1,6 @@
 # CoinFundIt.com Campaign Relay Server
 
-This repository contains the source code for a simple SQLite3 Node.js server that handles backend crowdfunding or donation campaign data processing. The relay server uses the [nginx](https://nginx.org/) web server as a reverse proxy to handle incoming requests.
+This repository contains the source code for a simple SQLite3 Node.js server that handles backend crowdfunding or donations campaigns data processing.
 
 ## Repository Contents
 
@@ -8,6 +8,8 @@ This repository contains the source code for a simple SQLite3 Node.js server tha
   - `config.js`: Contains server configuration settings.
   - `database.js`: Manages database connections and operations.
   - `server.js`: Initializes and starts the server.
+  - `syncRelays.js`: Syncs data between relays.
+  - `relays,json`: Contains list of relays.
 - `app.js`: Main entry point for the application.
 - `package.json`: Lists the project's dependencies and scripts.
 - `package-lock.json`: Locks down dependency versions for consistent installs.
@@ -117,12 +119,23 @@ Restart nginx
 
 - Visit your relay server domain and see if you get the message `Cannot GET /` which is a good sign as it means the server is online and publicly accessible.
 
+7. Sync data from other relays
+
+- `cd src`
+- `/usr/bin/node syncRelays.js`
+
+8. Create server cron job for continuous sync
+
+- `crontab -e`
+- Select your preferred text editor, then paste the following and save:
+- `*/5 * * * * /usr/bin/node /backend_invoices/src/syncRelays.js`
+
 # Submit Relay for Inclusion
 
 Once the relay server is up and running, please submit a Pull Request for the `/js/relays.js` (<a href="https://github.com/Spl0itable/coinfundit/blob/main/js/relays.js">here</a>) and `relays.json` (<a href="https://github.com/Spl0itable/backend_invoices/blob/main/src/relays.json">here</a>) files.
 
 Add your domain in the same syntax as outlined in the file:
 
-`{ name: "https://your_domain.com" },`
+`{ "name": "https://your_domain" },`
 
-Once approved and merged to the production CoinFundIt.com app, your relay server will immediately begin to read/write data for all crowdfunding or donation campaigns. 
+Once approved and merged to the production CoinFundIt.com app, your relay server will immediately begin to read/write data for all crowdfunding or donations campaigns. 
