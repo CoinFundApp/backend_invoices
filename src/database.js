@@ -177,6 +177,19 @@ const fetchmany = async (wallets, mainnet) => {
   })
 }
 
+const fetchAll = async (mainnet) => {
+  return new Promise(async (resolve, fail) => {
+    const selectQuery = `SELECT * FROM invoices ORDER BY utx DESC LIMIT 100`;
+
+    const ret = [];
+    await db.each(selectQuery, [], async (err, row) => {
+      ret.push(row)
+    }, () => {
+      resolve(ret)
+    })
+  })
+}
+
 const fetch = async (currency, address, mainnet) => {
   return new Promise(async (resolve, fail) => {
     //const hashString = `${currency}:${address}:${(mainnet) ? '1' : '0'}`
@@ -205,6 +218,7 @@ module.exports = {
   get,
   fetch,
   fetchmany,
+  fetchAll,
   updateStatus,
   updateTX,
   cancel,
