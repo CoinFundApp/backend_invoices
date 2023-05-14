@@ -42,7 +42,7 @@ If you would like to help CoinFundIt.com remain decentralized, please contribute
 
 2. Clone the repository:
 
-- `git clone https://github.com/Spl0itable/backend_invoices.git`
+- `git clone https://github.com/CoinFundIt/backend_invoices.git`
 - `cd backend_invoices`
 - `sudo npm install`
 - `sudo npm install axios`
@@ -134,7 +134,7 @@ Restart nginx
 
 # Submit Relay for Inclusion
 
-Once the relay server is up and running, please submit a Pull Request for the `/js/relays.js` (<a href="https://github.com/Spl0itable/coinfundit/blob/main/js/relays.js">here</a>) and `relays.json` (<a href="https://github.com/Spl0itable/backend_invoices/blob/main/src/relays.json">here</a>) files.
+Once the relay server is up and running, please submit a Pull Request for the `/js/relays.js` (<a href="https://github.com/CoinFundIt/coinfundit/blob/main/js/relays.js">here</a>) and `relays.json` (<a href="https://github.com/CoinFundIt/backend_invoices/blob/main/src/relays.json">here</a>) files.
 
 Add your domain in the same syntax as outlined in the files:
 
@@ -144,6 +144,6 @@ Once approved and merged to the production CoinFundIt.com app, your relay server
 
 # Censorship-resistant access:
 
-As with the <a href="https://github.com/Spl0itable/coinfundit">main repo</a> of the CoinFundIt.com app, this repo is also mirroed on IPFS. The `relays.json` file used within the `syncRelays.js` script calls the file through an IPFS gateway. In the event the gateway goes down, a new IPFS gateway can be found <a href="https://ipfs.github.io/public-gateway-checker/">here</a> and changed within the `syncRelays.js` file. 
+As with the <a href="https://github.com/CoinFundIt/coinfundit">main repo</a> of the CoinFundIt.com app, this repo is also mirroed on IPFS. The `relays.json` file used within the `syncRelays.js` script calls the file through an IPFS gateway. In the event the gateway goes down, a new IPFS gateway can be found <a href="https://ipfs.github.io/public-gateway-checker/">here</a> and changed within the `syncRelays.js` file. 
 
 IPFS Hash: `QmNZa1mma3Czz7JQsc9JubgsQZcj1JqU8HyPgpuwJGF8v8`
