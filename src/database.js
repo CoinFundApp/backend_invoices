@@ -25,31 +25,6 @@ const tableFields = {
   'uniqhash':       `VARCHAR(32)`
 }
 
-const addColumnIfNotExists = async (tableName, columnName, columnDefinition) => {
-  return new Promise(async (resolve, fail) => {
-    db.get(`PRAGMA table_info(${tableName})`, [], (err, rows) => {
-      if (err) {
-        fail(err)
-        return;
-      }
-
-      const columnExists = rows.some(row => row.name === columnName)
-
-      if (!columnExists) {
-        db.run(`ALTER TABLE ${tableName} ADD COLUMN ${columnName} ${columnDefinition}`, [], (err) => {
-          if (err) {
-            fail(err)
-            return;
-          }
-          resolve(true)
-        })
-      } else {
-        resolve(false)
-      }
-    })
-  })
-}
-
 const load = async () => {
   const fields = Object.keys(tableFields).map((name) => {
     return `${name} ${tableFields[name]}`
@@ -57,17 +32,26 @@ const load = async () => {
   const createQuery = `CREATE TABLE IF NOT EXISTS invoices( ${fields} )`;
 
   db.serialize(async () => {
-    db.run(createQuery, async (err) => {
+    db.run(createQuery)
+
+    // Check for the existence of the 'video' column
+    db.get("PRAGMA table_info(invoices)", [], (err, rows) => {
       if (err) {
-        console.error('Error creating table:', err)
+        console.error(err.message)
         return;
       }
 
-      // Add the 'video' column if it doesn't exist
-      try {
-        await addColumnIfNotExists('invoices', 'video', tableFields['video'])
-      } catch (err) {
-        console.error('Error adding video column:', err)
+      const videoColumnExists = rows.some(row => row.name === 'video')
+
+      if (!videoColumnExists) {
+        // Add the 'video' column if it doesn't exist
+        db.run("ALTER TABLE invoices ADD COLUMN video TEXT", [], (err) => {
+          if (err) {
+            console.error(err.message)
+          } else {
+            console.log("Added 'video' column to the 'invoices' table")
+          }
+        })
       }
     })
   })
