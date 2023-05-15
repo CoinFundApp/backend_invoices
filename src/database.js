@@ -21,6 +21,7 @@ const tableFields = {
   'invoiceNumber':  `INTEGER`,
   'destAddress':    `TEXT`,
   'contact':        `TEXT`,
+  'video':          `TEXT`,
   'uniqhash':       `VARCHAR(32)`
 }
 
@@ -35,7 +36,7 @@ const load = async () => {
   })
 }
 
-const add = async (currency, toAddress, fromAddress, amount, label, mainnet, destAddress, contact, uniqhash) => {
+const add = async (currency, toAddress, fromAddress, amount, label, mainnet, destAddress, contact, video, uniqhash) => {
   return new Promise(async (resolve, fail) => {
     const fromHashString = `${currency}:${fromAddress}:${(mainnet) ? '1' : '0'}`
     const toHashString = `${currency}:${toAddress}:${(mainnet) ? '1' : '0'}`
@@ -69,6 +70,7 @@ const add = async (currency, toAddress, fromAddress, amount, label, mainnet, des
         invoiceNumber,
         (destAddress) ? destAddress : '',
         striptags(contact),
+        striptags(video),
         uniqhash
       )
       stmt.finalize();

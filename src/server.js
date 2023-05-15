@@ -114,6 +114,7 @@ app.post('/invoice/push/', async (req,res) => {
     pubkey,
     toAddress,
     contact,
+    video,
     destination,
     uniqhash,
   } = req.body
@@ -128,6 +129,7 @@ app.post('/invoice/push/', async (req,res) => {
         mainnet,
         destination,
         contact,
+        video,
         uniqhash,
       )
       res.status(200).json({ answer: 'ok', invoiceId })
