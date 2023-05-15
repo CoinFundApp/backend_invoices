@@ -139,29 +139,27 @@ app.post('/invoice/push/', async (req,res) => {
   }
 })
 
-app.post('/invoice/fetchmany/', async (req, res) => {
-  const { wallets, mainnet, limit, offset } = req.body;
+app.post('/invoice/fetchmany', async (req,res) => {
+  const { wallets, mainnet, limit, offset } = req.body
 
-  let retData = [];
+  if (wallets
+    && wallets instanceof Array
+    && wallets.length
+  ) {
+    const filteredWallets = wallets.filter((wallet) => (wallet && wallet.type && wallet.address))
 
-  if (!wallets || !wallets.length) {
-    retData = await database.fetchAll(mainnet)
-  } else if (wallets instanceof Array && wallets.length) {
-    const filteredWallets = wallets.filter(
-      (wallet) => wallet && wallet.type && wallet.address
-    )
+    let retData = []
 
     if (filteredWallets.length) {
       retData = await database.fetchmany(wallets, mainnet)
     }
-  }
 
-  if (retData.length) {
     res.status(200).json({
       answer: 'ok',
       wallets,
-      items: retData,
+      items: retData
     })
+
   } else {
     res.status(400).json({ error: 'Bad request' })
   }
