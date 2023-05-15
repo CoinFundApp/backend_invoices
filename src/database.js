@@ -35,13 +35,20 @@ const load = async () => {
     db.run(createQuery)
 
     // Check for the existence of the 'video' column
-    db.get("PRAGMA table_info(invoices)", [], (err, rows) => {
+    db.all("PRAGMA table_info(invoices)", [], (err, rows) => {
       if (err) {
         console.error(err.message)
         return;
       }
 
-      const videoColumnExists = rows.some(row => row.name === 'video')
+      let videoColumnExists = false;
+
+      for (const row of rows) {
+        if (row.name === 'video') {
+          videoColumnExists = true;
+          break;
+        }
+      }
 
       if (!videoColumnExists) {
         // Add the 'video' column if it doesn't exist
