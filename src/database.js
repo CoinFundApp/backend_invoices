@@ -54,7 +54,7 @@ const add = async (currency, toAddress, fromAddress, amount, label, mainnet, des
     const createUtx = Math.floor(new Date().getTime() / 1000)
 
     db.serialize( () => {
-      const stmt = db.prepare('INSERT INTO invoices VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )')
+      const stmt = db.prepare('INSERT INTO invoices VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )')
       stmt.run(null,
         fromHex,
         toHex,
