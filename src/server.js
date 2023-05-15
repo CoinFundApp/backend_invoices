@@ -139,7 +139,7 @@ app.post('/invoice/push/', async (req,res) => {
   }
 })
 
-app.post('/invoice/fetchmany', async (req, res) => {
+app.post('/invoice/fetchmany/', async (req, res) => {
   const { wallets, mainnet, limit, offset } = req.body;
 
   let retData = [];
