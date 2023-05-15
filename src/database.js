@@ -21,7 +21,6 @@ const tableFields = {
   'invoiceNumber':  `INTEGER`,
   'destAddress':    `TEXT`,
   'contact':        `TEXT`,
-  'video':          `TEXT`,
   'uniqhash':       `VARCHAR(32)`
 }
 
@@ -31,40 +30,12 @@ const load = async () => {
   }).join(',')
   const createQuery = `CREATE TABLE IF NOT EXISTS invoices( ${fields} )`;
 
-  db.serialize(async () => {
+  db.serialize( async () => {
     db.run(createQuery)
-
-    // Check for the existence of the 'video' column
-    db.all("PRAGMA table_info(invoices)", [], (err, rows) => {
-      if (err) {
-        console.error(err.message)
-        return;
-      }
-
-      let videoColumnExists = false;
-
-      for (const row of rows) {
-        if (row.name === 'video') {
-          videoColumnExists = true;
-          break;
-        }
-      }
-
-      if (!videoColumnExists) {
-        // Add the 'video' column if it doesn't exist
-        db.run("ALTER TABLE invoices ADD COLUMN video TEXT", [], (err) => {
-          if (err) {
-            console.error(err.message)
-          } else {
-            console.log("Added 'video' column to the 'invoices' table")
-          }
-        })
-      }
-    })
   })
 }
 
-const add = async (currency, toAddress, fromAddress, amount, label, mainnet, destAddress, contact, video, uniqhash) => {
+const add = async (currency, toAddress, fromAddress, amount, label, mainnet, destAddress, contact, uniqhash) => {
   return new Promise(async (resolve, fail) => {
     const fromHashString = `${currency}:${fromAddress}:${(mainnet) ? '1' : '0'}`
     const toHashString = `${currency}:${toAddress}:${(mainnet) ? '1' : '0'}`
@@ -98,7 +69,6 @@ const add = async (currency, toAddress, fromAddress, amount, label, mainnet, des
         invoiceNumber,
         (destAddress) ? destAddress : '',
         striptags(contact),
-        striptags(video),
         uniqhash
       )
       stmt.finalize();
