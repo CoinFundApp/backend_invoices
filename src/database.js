@@ -21,6 +21,7 @@ const tableFields = {
   'invoiceNumber':  `INTEGER`,
   'destAddress':    `TEXT`,
   'contact':        `TEXT`,
+  'image':          `TEXT`,
   'video':          `TEXT`,
   'uniqhash':       `VARCHAR(32)`
 }
@@ -36,7 +37,7 @@ const load = async () => {
   })
 }
 
-const add = async (currency, toAddress, fromAddress, amount, label, mainnet, destAddress, contact, video, uniqhash) => {
+const add = async (currency, toAddress, fromAddress, amount, label, mainnet, destAddress, contact, image, video, uniqhash) => {
   return new Promise(async (resolve, fail) => {
     const fromHashString = `${currency}:${fromAddress}:${(mainnet) ? '1' : '0'}`
     const toHashString = `${currency}:${toAddress}:${(mainnet) ? '1' : '0'}`
@@ -54,7 +55,7 @@ const add = async (currency, toAddress, fromAddress, amount, label, mainnet, des
     const createUtx = Math.floor(new Date().getTime() / 1000)
 
     db.serialize( () => {
-      const stmt = db.prepare('INSERT INTO invoices VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )')
+      const stmt = db.prepare('INSERT INTO invoices VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )')
       stmt.run(null,
         fromHex,
         toHex,
@@ -70,6 +71,7 @@ const add = async (currency, toAddress, fromAddress, amount, label, mainnet, des
         invoiceNumber,
         (destAddress) ? destAddress : '',
         striptags(contact),
+        striptags(image),
         striptags(video),
         uniqhash
       )

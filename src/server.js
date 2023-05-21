@@ -114,6 +114,7 @@ app.post('/invoice/push/', async (req,res) => {
     pubkey,
     toAddress,
     contact,
+    image,
     video,
     destination,
     uniqhash,
@@ -129,6 +130,7 @@ app.post('/invoice/push/', async (req,res) => {
         mainnet,
         destination,
         contact,
+        image,
         video,
         uniqhash,
       )
