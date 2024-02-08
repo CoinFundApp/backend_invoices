@@ -3,7 +3,7 @@ const sqlite3 = require('sqlite3').verbose();
 
 const mainnet = '1';
 const dbPath = '../db.sqlite';
-const relaysUrl = 'https://lingering-mountain-4976.on.fleek.co/src/relays.json';
+const relaysUrl = 'https://coinfundrelay.on.fleek.co/src/relays.json';
 
 const escapeSingleQuotes = (value) => {
     if (typeof value === 'string') {
