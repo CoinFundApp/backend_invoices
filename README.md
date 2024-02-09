@@ -147,5 +147,5 @@ Once approved and merged to the production CoinFund app, your relay server will 
 
 As with the <a href="https://github.com/CoinFundApp/coinfund">main repo</a> of the CoinFund app, this repo is also mirroed on IPFS. The `relays.json` file used within the `syncRelays.js` script calls the file through an IPFS gateway. In the event the gateway goes down, a new IPFS gateway can be found <a href="https://ipfs.github.io/public-gateway-checker/">here</a> and changed within the `syncRelays.js` file. 
 
-IPFS Hash: `QmZ2Z91X7taHgtLfWGofWgYwWRUq2fjawWEYtKnycXZLsA`
-Internet Computer Canister ID: `kpscj-uaaaa-aaaad-qfkga-cai`
+- IPFS Hash: `QmZ2Z91X7taHgtLfWGofWgYwWRUq2fjawWEYtKnycXZLsA`
+- Internet Computer Canister ID: `kpscj-uaaaa-aaaad-qfkga-cai`
