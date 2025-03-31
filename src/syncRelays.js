@@ -3,7 +3,7 @@ const sqlite3 = require('sqlite3').verbose();
 
 const mainnet = '1';
 const dbPath = '../db.sqlite';
-const relaysUrl = 'https://coinfundrelay.on.fleek.co/src/relays.json';
+const relaysUrl = 'https://raw.githubusercontent.com/CoinFundApp/backend_invoices/refs/heads/main/src/relays.json';
 
 const escapeSingleQuotes = (value) => {
     if (typeof value === 'string') {
